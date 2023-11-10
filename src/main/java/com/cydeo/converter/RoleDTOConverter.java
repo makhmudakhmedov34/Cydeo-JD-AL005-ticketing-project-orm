@@ -3,6 +3,7 @@ package com.cydeo.converter;
 import com.cydeo.dto.RoleDTO;
 import com.cydeo.service.RoleService;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class RoleDTOConverter implements Converter<String, RoleDTO> {
     private final RoleService roleService;
 
-    public RoleDTOConverter(RoleService roleService) {
+    public RoleDTOConverter(@Lazy RoleService roleService) {
         this.roleService = roleService;
     }
     @Override

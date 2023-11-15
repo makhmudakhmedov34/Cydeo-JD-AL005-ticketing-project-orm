@@ -30,9 +30,7 @@ public class ProjectController {
         model.addAttribute("project", new ProjectDTO());
         model.addAttribute("projects", projectService.listAllProjects());
         model.addAttribute("managers", userService.findByRole("Manager"));
-
         return "/project/create";
-
     }
 
     @PostMapping("/create")

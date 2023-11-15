@@ -40,8 +40,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectDTO update(ProjectDTO dto) {
-        return null;
+    public void update(ProjectDTO dto) {
+
     }
 
     @Override

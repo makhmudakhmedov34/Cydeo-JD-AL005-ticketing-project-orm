@@ -13,6 +13,7 @@ public interface ProjectService {
     void update(ProjectDTO dto);
     void deleteByProjectCode(String projectCode);
     void delete(String username);
+    void complete(String projectCode);
 
 
 }

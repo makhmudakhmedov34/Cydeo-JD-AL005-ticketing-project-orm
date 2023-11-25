@@ -118,17 +118,12 @@ public class TaskController {
     public String employeeUpdateTask(@Valid @ModelAttribute("task") TaskDTO task, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
-
             model.addAttribute("tasks", taskService.listAllTasksByStatusIsNot(Status.COMPLETE));
             model.addAttribute("statuses", Status.values());
-
             return "/task/status-update";
-
         }
-
         taskService.updateStatus(task);
         return "redirect:/task/employee/pending-tasks";
-
     }
 
     @GetMapping("/employee/archive")

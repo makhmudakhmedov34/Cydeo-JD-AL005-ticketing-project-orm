@@ -1,5 +1,6 @@
 package com.cydeo.config;
 
+import com.cydeo.service.SecurityService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +20,12 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
 
-//    @Bean
+    private final SecurityService securityService;
+
+    public SecurityConfig(SecurityService securityService) {
+        this.securityService = securityService;
+    }
+    //    @Bean
 //    public UserDetailsService userDetailsService(PasswordEncoder encoder){
 //
 //        List<UserDetails> userList = new ArrayList<>();
@@ -59,6 +66,15 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/welcome")
                 .failureUrl("/login?error=true")
                 .permitAll()
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login")
+                .and()
+                .rememberMe()
+                .tokenValiditySeconds(120)
+                .key("cydeo")
+                .userDetailsService(securityService)
                 .and().build();
     }
 

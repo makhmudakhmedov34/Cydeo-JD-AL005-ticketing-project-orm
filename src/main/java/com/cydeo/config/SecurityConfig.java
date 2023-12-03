@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.ArrayList;
@@ -21,10 +22,13 @@ import java.util.List;
 public class SecurityConfig {
 
     private final SecurityService securityService;
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
 
-    public SecurityConfig(SecurityService securityService) {
+    public SecurityConfig(SecurityService securityService, AuthenticationSuccessHandler authenticationSuccessHandler) {
         this.securityService = securityService;
+        this.authenticationSuccessHandler = authenticationSuccessHandler;
     }
+
     //    @Bean
 //    public UserDetailsService userDetailsService(PasswordEncoder encoder){
 //
@@ -44,9 +48,10 @@ public class SecurityConfig {
                 .authorizeRequests()
                 //.antMatchers("/user/**").hasRole("Admin")
                 .antMatchers("/user/**").hasAuthority("Admin")
-                .antMatchers("/project/**").hasRole("Manager")
-                .antMatchers("/task/employee/**").hasRole("Employee")
-                .antMatchers("/task/**").hasRole("Manager")
+                //.antMatchers("/project/**").hasRole("Manager")
+                .antMatchers("/project/**").hasAuthority("Manager")
+                .antMatchers("/task/employee/**").hasAuthority("Employee")
+                .antMatchers("/task/**").hasAuthority("Manager")
 
                 //.antMatchers("/task/**").hasAnyRole("EMPLOYEE","ADMIN")
                 //.antMatchers("task/**").hasAuthority("ROLE_EMPLOYEE")
@@ -63,7 +68,8 @@ public class SecurityConfig {
                 //.httpBasic()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/welcome")
+                //.defaultSuccessUrl("/welcome")
+                .successHandler(authenticationSuccessHandler)
                 .failureUrl("/login?error=true")
                 .permitAll()
                 .and()
